@@ -76,14 +76,14 @@ def judge_scoring(judge_id):
 
             for criterion in criteria:
                 try:
-                    score_input = request.form.get(f'{contestant_name}_{criterion}')
+                    score_input = request.form.get(f'{contestant_name}_{criterion["name"]}')
                     score = float(score_input.replace('%', ''))
                     if 0 <= score <= 100:
-                        scores[judge_name][contestant_name][criterion] = score
+                        scores[judge_name][contestant_name][criterion['name']] = score
                     else:
                         raise ValueError("Score out of range")
                 except ValueError:
-                    return f"Invalid score input for {contestant_name} in {criterion}. Please enter a valid percentage (0-100%).", 400
+                    return f"Invalid score input for {contestant_name} in {criterion['name']}. Please enter a valid percentage (0-100%).", 400
 
         save_data(judges, contestants, criteria, scores)
         return redirect(url_for('judge_scoring', judge_id=judge_id))
@@ -147,10 +147,16 @@ def admin():
                         'photo': photo_filename
                     })
 
-        # Add criteria from admin form
-        new_criteria = request.form.get('criteria')
-        if new_criteria and new_criteria not in criteria:
-            criteria.append(new_criteria)
+        # Process criteria form
+        criteria_names = request.form.getlist('criteriaName[]')
+        criteria_percentages = request.form.getlist('criteriaPercentage[]')
+        criteria.clear()  # Clear old criteria
+
+        for i in range(len(criteria_names)):
+            criteria.append({
+                'name': criteria_names[i],
+                'percentage': int(criteria_percentages[i])
+            })
 
         save_data(judges, contestants, criteria, scores)
         return redirect(url_for('admin'))

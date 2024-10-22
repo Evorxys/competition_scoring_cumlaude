@@ -1,0 +1,83 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<h2>Judges</h2>
+
+<div class="judges-container">
+    {% for judge in judges %}
+    <div class="judge-card">
+        <a href="{{ url_for('judge_scoring', judge_id=loop.index0) }}">
+            <img src="{{ url_for('static', filename='uploads/' + judge.photo) }}" alt="{{ judge.name }}" class="judge-photo">
+        </a>
+        <p>{{ judge.name }}</p>
+    </div>
+    {% endfor %}
+</div>
+
+<style>
+    /* Ensure container aligns the judge cards horizontally */
+    .judges-container {
+        display: flex;
+        flex-wrap: wrap;  /* Allows wrapping to the next line if needed */
+        justify-content: center;  /* Center align horizontally */
+        gap: 20px;  /* Space between each judge card */
+        padding: 20px;
+    }
+
+    /* Ensure each judge card is displayed in a fixed size */
+    .judge-card {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        width: 200px;
+        background-color: #333333;
+        border-radius: 10px;
+        padding: 10px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s;
+    }
+
+    /* Judge photo styling */
+    .judge-photo {
+        width: 150px;
+        height: 150px;
+        object-fit: cover;
+        border-radius: 50%;
+        border: 2px solid gold;
+        cursor: pointer;
+        transition: transform 0.3s;
+    }
+
+    /* Hover effect on photo */
+    .judge-photo:hover {
+        transform: scale(1.1);
+    }
+
+    /* Styling for judge name text */
+    .judge-card p {
+        margin-top: 10px;
+        color: gold;
+        font-weight: bold;
+    }
+
+    /* Responsive breakpoints */
+    @media (max-width: 768px) {
+        .judges-container {
+            justify-content: space-around;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .judges-container {
+            flex-direction: column;  /* Stack items vertically on smaller screens */
+            align-items: center;
+        }
+
+        .judge-card {
+            width: 100%;  /* Full width on mobile */
+            max-width: 300px;
+        }
+    }
+</style>
+{% endblock %}

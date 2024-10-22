@@ -1,0 +1,89 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<h2>Judge: {{ judge_name }}</h2>
+
+<form method="POST" action="{{ url_for('judge_scoring', judge_id=judge_id) }}">
+    <table class="scoring-table">
+        <thead>
+            <tr>
+                <th>Contestant</th>
+                {% for criterion in criteria %}
+                    <th>{{ criterion }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for contestant in contestants %}
+            <tr>
+                <td>{{ contestant.name }}</td>
+                {% for criterion in criteria %}
+                <td>
+                    <input type="number" name="{{ contestant.name }}_{{ criterion }}" placeholder="Enter score (e.g., 85)" required min="0" max="100">
+                </td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <button type="submit" class="submit-btn">Submit Scores</button>
+</form>
+
+<script>
+    document.querySelector('form').addEventListener('submit', function(event) {
+        const inputs = document.querySelectorAll('input[type="number"]');
+        for (let input of inputs) {
+            if (input.value < 0 || input.value > 100) {
+                alert("Please enter a valid score between 0 and 100.");
+                event.preventDefault();
+                return false;
+            }
+        }
+    });
+</script>
+
+<style>
+    .scoring-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+
+    .scoring-table th, .scoring-table td {
+        border: 1px solid gold;
+        padding: 10px;
+        text-align: center;
+    }
+
+    .submit-btn {
+        margin-top: 20px;
+        padding: 10px 20px;
+        background-color: #333;
+        border: 1px solid gold;
+        color: gold;
+        cursor: pointer;
+        border-radius: 5px;
+        transition: background-color 0.3s, transform 0.2s;
+    }
+
+    .submit-btn:hover {
+        background-color: gold;
+        color: #333;
+        transform: scale(1.05);
+    }
+
+    .submit-btn:active {
+        transform: scale(0.95);
+    }
+
+    input[type="number"] {
+        width: 80px;
+        padding: 5px;
+        border: 1px solid #555;
+        border-radius: 5px;
+        background-color: #444;
+        color: gold;
+    }
+</style>
+{% endblock %}

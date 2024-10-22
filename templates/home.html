@@ -1,0 +1,14 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<h2>Contestants</h2>
+<div class="contestant-list">
+    {% for contestant in contestants %}
+    <div class="contestant-card">
+        <img src="{{ url_for('static', filename='uploads/' + contestant['photo']) }}" alt="{{ contestant['name'] }}">
+        <h3>{{ contestant['name'] }}</h3>
+        <p>Age: {{ contestant['age'] }}</p>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,236 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<h2>Admin Panel</h2>
+
+<div class="admin-container">
+    <!-- Form for Judges -->
+    <h3>Add or Edit Judges</h3>
+    <form id="adminForm" method="POST" enctype="multipart/form-data">
+        <div id="judgesList" class="form-section">
+            <!-- Existing Judges will be displayed here -->
+            {% for judge in judges %}
+            <div class="judge-entry">
+                <label for="judgeName">Judge Name:</label>
+                <input type="text" name="judgeName[]" value="{{ judge.name }}" required>
+
+                <label for="judgePhoto">Judge Photo:</label>
+                <input type="file" name="judgePhoto[]" accept="image/*">
+                <img src="{{ url_for('static', filename='uploads/' + judge.photo) }}" alt="Judge Photo" width="100">
+
+                <label for="judgeBio">Judge Bio:</label>
+                <textarea name="judgeBio[]" rows="3" required>{{ judge.bio }}</textarea>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Button to add more judges -->
+        <button type="button" id="addJudgeBtn" class="add-btn">
+            ★ Add Judge
+        </button>
+
+        <!-- Form for Contestants -->
+        <h3>Add or Edit Contestants</h3>
+        <div id="contestantsList" class="form-section">
+            <!-- Existing Contestants will be displayed here -->
+            {% for contestant in contestants %}
+            <div class="contestant-entry">
+                <label for="contestantName">Contestant Name:</label>
+                <input type="text" name="contestantName[]" value="{{ contestant.name }}" required>
+
+                <label for="contestantPhoto">Contestant Photo:</label>
+                <input type="file" name="contestantPhoto[]" accept="image/*">
+                <img src="{{ url_for('static', filename='uploads/' + contestant.photo) }}" alt="Contestant Photo" width="100">
+
+                <label for="contestantAge">Contestant Age:</label>
+                <input type="number" name="contestantAge[]" value="{{ contestant.age }}" required>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Button to add more contestants -->
+        <button type="button" id="addContestantBtn" class="add-btn">
+            ★ Add Contestant
+        </button>
+
+        <!-- Criteria Section -->
+        <h3>Add Criteria</h3>
+        <div id="criteria-section" class="form-section">
+            <!-- Existing criteria will be displayed here -->
+            {% for criterion in criteria %}
+            <div class="criteria-entry">
+                <label>Criteria Name:</label>
+                <input type="text" name="criteriaName[]" value="{{ criterion }}" required>
+
+                <label>Percentage:</label>
+                <input type="number" name="criteriaPercentage[]" min="1" max="100" required>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Button to add more criteria -->
+        <button type="button" id="addCriteriaBtn" class="add-btn">★ Add Criteria</button>
+
+        <!-- Submit and Clear All Buttons -->
+        <div class="form-actions">
+            <button type="submit" class="submit-btn">Save Changes</button>
+            <button type="submit" name="clear" class="clear-btn">Clear All Judges and Contestants</button>
+        </div>
+    </form>
+
+    <!-- Link to Results Page -->
+    <div class="results-link">
+        <h3>View Results</h3>
+        <a href="{{ url_for('results_page') }}" class="results-btn">Go to Results</a>
+    </div>
+</div>
+
+<script>
+    // Function to add more judges dynamically
+    document.getElementById('addJudgeBtn').addEventListener('click', function() {
+        const judgesList = document.getElementById('judgesList');
+        const newJudge = document.createElement('div');
+        newJudge.className = 'judge-entry';
+        newJudge.innerHTML = `
+            <label for="judgeName">Judge Name:</label>
+            <input type="text" name="judgeName[]" required>
+
+            <label for="judgePhoto">Judge Photo:</label>
+            <input type="file" name="judgePhoto[]" accept="image/*" required>
+
+            <label for="judgeBio">Judge Bio:</label>
+            <textarea name="judgeBio[]" rows="3" required></textarea>
+        `;
+        judgesList.appendChild(newJudge);
+    });
+
+    // Function to add more contestants dynamically
+    document.getElementById('addContestantBtn').addEventListener('click', function() {
+        const contestantsList = document.getElementById('contestantsList');
+        const newContestant = document.createElement('div');
+        newContestant.className = 'contestant-entry';
+        newContestant.innerHTML = `
+            <label for="contestantName">Contestant Name:</label>
+            <input type="text" name="contestantName[]" required>
+
+            <label for="contestantPhoto">Contestant Photo:</label>
+            <input type="file" name="contestantPhoto[]" accept="image/*" required>
+
+            <label for="contestantAge">Contestant Age:</label>
+            <input type="number" name="contestantAge[]" required>
+        `;
+        contestantsList.appendChild(newContestant);
+    });
+
+    // Function to add more criteria dynamically
+    document.getElementById('addCriteriaBtn').addEventListener('click', function() {
+        const criteriaSection = document.getElementById('criteria-section');
+        const newCriteria = document.createElement('div');
+        newCriteria.className = 'criteria-entry';
+        newCriteria.innerHTML = `
+            <label>Criteria Name:</label>
+            <input type="text" name="criteriaName[]" required>
+
+            <label>Percentage:</label>
+            <input type="number" name="criteriaPercentage[]" min="1" max="100" required>
+        `;
+        criteriaSection.appendChild(newCriteria);
+    });
+
+    // Validation to ensure total percentage equals 100%
+    document.querySelector('form').addEventListener('submit', function(event) {
+        const percentages = document.querySelectorAll('input[name="criteriaPercentage[]"]');
+        let total = 0;
+        percentages.forEach(input => {
+            total += parseInt(input.value);
+        });
+
+        if (total !== 100) {
+            alert('The total percentage for all criteria must equal 100%.');
+            event.preventDefault();
+        }
+    });
+</script>
+
+<style>
+    /* Styling for Admin Panel Layout */
+    .admin-container {
+        max-height: 80vh;
+        overflow-y: auto;
+        padding: 20px;
+        border: 1px solid gold;
+        background-color: #222;
+        color: gold;
+        border-radius: 10px;
+    }
+
+    .form-section {
+        margin-bottom: 30px;
+    }
+
+    /* Buttons */
+    .add-btn, .submit-btn, .clear-btn, .results-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 10px 20px;
+        margin: 10px 0;
+        background-color: #333;
+        border: 1px solid gold;
+        color: gold;
+        cursor: pointer;
+        border-radius: 5px;
+        transition: background-color 0.3s, transform 0.2s;
+    }
+
+    .results-btn {
+        margin-top: 20px;
+        text-decoration: none;
+    }
+
+    .submit-btn:hover, .clear-btn:hover, .add-btn:hover, .results-btn:hover {
+        background-color: gold;
+        color: #333;
+        transform: scale(1.05);
+    }
+
+    .submit-btn:active, .clear-btn:active, .add-btn:active, .results-btn:active {
+        transform: scale(0.95);
+    }
+
+    /* Judge and Contestant Entries */
+    .judge-entry, .contestant-entry, .criteria-entry {
+        border: 1px solid gold;
+        padding: 10px;
+        margin-bottom: 20px;
+        border-radius: 5px;
+        background-color: #333;
+    }
+
+    .judge-entry label, .contestant-entry label, .criteria-entry label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+    }
+
+    input[type="text"], input[type="file"], input[type="number"], textarea {
+        width: 100%;
+        padding: 8px;
+        margin-bottom: 10px;
+        border: 1px solid #555;
+        border-radius: 5px;
+        background-color: #444;
+        color: gold;
+    }
+
+    /* Form Action Buttons */
+    .form-actions {
+        margin-top: 20px;
+    }
+
+    /* Results Link */
+    .results-link {
+        margin-top: 40px;
+    }
+</style>
+{% endblock %}

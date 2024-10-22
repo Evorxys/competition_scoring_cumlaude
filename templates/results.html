@@ -1,0 +1,39 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<h2>Results</h2>
+
+<table>
+    <thead>
+        <tr>
+            <th>Contestant</th>
+            <th>Total Score</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for contestant, total_score in ranked_contestants %}
+        <tr>
+            <td>{{ contestant }}</td>
+            <td>{{ total_score }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<style>
+/* Add table styling */
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+table, th, td {
+    border: 1px solid gold;
+}
+
+th, td {
+    padding: 10px;
+    text-align: center;
+}
+</style>
+{% endblock %}

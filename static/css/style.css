@@ -1,0 +1,89 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #000;
+    color: #fff;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+header {
+    text-align: center;
+    background-color: #222;
+    padding: 20px 0;
+    border-bottom: 1px solid gold;
+}
+
+header h1 {
+    color: gold;
+    font-size: 2.5em;
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+}
+
+nav ul li {
+    display: inline;
+    margin: 0 15px;
+}
+
+nav ul li a {
+    color: gold;
+    text-decoration: none;
+}
+
+h2 {
+    color: gold;
+    margin-bottom: 20px;
+}
+
+.judges-list, .contestant-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.judge-card, .contestant-card {
+    background-color: #333;
+    border: 1px solid gold;
+    padding: 10px;
+    width: 250px;
+    text-align: center;
+}
+
+.judge-card img, .contestant-card img {
+    max-width: 100%;
+    border-radius: 5px;
+}
+
+footer {
+    text-align: center;
+    padding: 20px 0;
+    background-color: #222;
+    border-top: 1px solid gold;
+    margin-top: 40px;
+}
+
+.add-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 20px;
+    background-color: #333;
+    border: 1px solid gold;
+    color: gold;
+    cursor: pointer;
+    margin: 10px 0;
+    border-radius: 5px;
+}
+
+.add-btn img {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+}

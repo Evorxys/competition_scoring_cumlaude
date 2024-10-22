@@ -9,7 +9,7 @@
             <tr>
                 <th>Contestant</th>
                 {% for criterion in criteria %}
-                    <th>{{ criterion }}</th>
+                    <th>{{ criterion.name }} ({{ criterion.percentage }}%)</th>
                 {% endfor %}
             </tr>
         </thead>
@@ -19,7 +19,7 @@
                 <td>{{ contestant.name }}</td>
                 {% for criterion in criteria %}
                 <td>
-                    <input type="number" name="{{ contestant.name }}_{{ criterion }}" placeholder="Enter score (e.g., 85)" required min="0" max="100">
+                    <input type="number" name="{{ contestant.name }}_{{ criterion.name }}" placeholder="Enter score (0-100)" required min="0" max="100">
                 </td>
                 {% endfor %}
             </tr>

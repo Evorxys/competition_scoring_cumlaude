@@ -20,6 +20,8 @@
 
                 <label for="judgeBio">Judge Bio:</label>
                 <textarea name="judgeBio[]" rows="3" required>{{ judge.bio }}</textarea>
+                
+                <button type="button" class="delete-btn" onclick="deleteJudge(this)">Delete Judge</button>
             </div>
             {% endfor %}
         </div>
@@ -44,6 +46,8 @@
 
                 <label for="contestantAge">Contestant Age:</label>
                 <input type="number" name="contestantAge[]" value="{{ contestant.age }}" required>
+                
+                <button type="button" class="delete-btn" onclick="deleteContestant(this)">Delete Contestant</button>
             </div>
             {% endfor %}
         </div>
@@ -64,6 +68,8 @@
 
                 <label>Percentage:</label>
                 <input type="number" name="criteriaPercentage[]" value="{{ criterion.percentage }}" min="1" max="100" required>
+                
+                <button type="button" class="delete-btn" onclick="deleteCriterion(this)">Delete Criterion</button>
             </div>
             {% endfor %}
         </div>
@@ -100,6 +106,8 @@
 
             <label for="judgeBio">Judge Bio:</label>
             <textarea name="judgeBio[]" rows="3" required></textarea>
+
+            <button type="button" class="cancel-btn" onclick="cancelEntry(this)">Cancel</button>
         `;
         judgesList.appendChild(newJudge);
     });
@@ -118,6 +126,8 @@
 
             <label for="contestantAge">Contestant Age:</label>
             <input type="number" name="contestantAge[]" required>
+
+            <button type="button" class="cancel-btn" onclick="cancelEntry(this)">Cancel</button>
         `;
         contestantsList.appendChild(newContestant);
     });
@@ -133,9 +143,43 @@
 
             <label>Percentage:</label>
             <input type="number" name="criteriaPercentage[]" min="1" max="100" required>
+
+            <button type="button" class="cancel-btn" onclick="cancelEntry(this)">Cancel</button>
         `;
         criteriaSection.appendChild(newCriteria);
     });
+
+    // Function to cancel an entry
+    function cancelEntry(button) {
+        const entry = button.closest('.judge-entry, .contestant-entry, .criteria-entry');
+        if (entry) {
+            entry.remove();
+        }
+    }
+
+    // Function to delete an existing judge
+    function deleteJudge(button) {
+        const judgeEntry = button.closest('.judge-entry');
+        if (judgeEntry) {
+            judgeEntry.remove();
+        }
+    }
+
+    // Function to delete an existing contestant
+    function deleteContestant(button) {
+        const contestantEntry = button.closest('.contestant-entry');
+        if (contestantEntry) {
+            contestantEntry.remove();
+        }
+    }
+
+    // Function to delete an existing criterion
+    function deleteCriterion(button) {
+        const criterionEntry = button.closest('.criteria-entry');
+        if (criterionEntry) {
+            criterionEntry.remove();
+        }
+    }
 
     // Validation to ensure total percentage equals 100%
     document.querySelector('form').addEventListener('submit', function(event) {
@@ -169,7 +213,7 @@
     }
 
     /* Buttons */
-    .add-btn, .submit-btn, .clear-btn, .results-btn {
+    .add-btn, .submit-btn, .clear-btn, .results-btn, .cancel-btn, .delete-btn {
         display: inline-flex;
         align-items: center;
         justify-content: center;
@@ -188,13 +232,13 @@
         text-decoration: none;
     }
 
-    .submit-btn:hover, .clear-btn:hover, .add-btn:hover, .results-btn:hover {
+    .submit-btn:hover, .clear-btn:hover, .add-btn:hover, .results-btn:hover, .cancel-btn:hover, .delete-btn:hover {
         background-color: gold;
         color: #333;
         transform: scale(1.05);
     }
 
-    .submit-btn:active, .clear-btn:active, .add-btn:active, .results-btn:active {
+    .submit-btn:active, .clear-btn:active, .add-btn:active, .results-btn:active, .cancel-btn:active, .delete-btn:active {
         transform: scale(0.95);
     }
 
@@ -231,6 +275,12 @@
     /* Results Link */
     .results-link {
         margin-top: 40px;
+    }
+
+    /* Cancel Button */
+    .cancel-btn {
+        background-color: red;
+        margin-left: 10px;
     }
 </style>
 {% endblock %}

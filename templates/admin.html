@@ -54,16 +54,16 @@
         </button>
 
         <!-- Criteria Section -->
-        <h3>Add Criteria</h3>
+        <h3>Add or Edit Criteria</h3>
         <div id="criteria-section" class="form-section">
             <!-- Existing criteria will be displayed here -->
             {% for criterion in criteria %}
             <div class="criteria-entry">
                 <label>Criteria Name:</label>
-                <input type="text" name="criteriaName[]" value="{{ criterion }}" required>
+                <input type="text" name="criteriaName[]" value="{{ criterion.name }}" required>
 
                 <label>Percentage:</label>
-                <input type="number" name="criteriaPercentage[]" min="1" max="100" required>
+                <input type="number" name="criteriaPercentage[]" value="{{ criterion.percentage }}" min="1" max="100" required>
             </div>
             {% endfor %}
         </div>
